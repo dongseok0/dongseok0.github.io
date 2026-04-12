@@ -10,15 +10,24 @@
     var params = new URLSearchParams(window.location.search);
     var v = params.get('v');
     var start = params.get('start');
-    // Try to open the app first, then fall back to YouTube
+    var end = params.get('end');
+
     if (v) {
       var deepLink = 'looptube://load?v=' + v
-        + (start ? '&start=' + params.get('start') : '')
-        + (params.get('end') ? '&end=' + params.get('end') : '');
+        + (start ? '&start=' + start : '')
+        + (end   ? '&end='   + end   : '');
+      var youtubeURL = 'https://youtu.be/' + v + (start ? '?t=' + Math.floor(parseFloat(start)) : '');
+
+      // 앱이 열리면 페이지가 hidden 상태가 됨 → 그 시점에 타이머 취소
+      var fallbackTimer = setTimeout(function() {
+        window.location = youtubeURL;
+      }, 2000);
+
+      document.addEventListener('visibilitychange', function() {
+        if (document.hidden) clearTimeout(fallbackTimer);
+      });
+
       window.location = deepLink;
-      setTimeout(function() {
-        window.location = 'https://youtu.be/' + v + (start ? '?t=' + Math.floor(start) : '');
-      }, 1500);
     }
   </script>
 </head>
