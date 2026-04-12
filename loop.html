@@ -1,0 +1,28 @@
+---
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>LoopTube</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    var params = new URLSearchParams(window.location.search);
+    var v = params.get('v');
+    var start = params.get('start');
+    // Try to open the app first, then fall back to YouTube
+    if (v) {
+      var deepLink = 'looptube://load?v=' + v
+        + (start ? '&start=' + params.get('start') : '')
+        + (params.get('end') ? '&end=' + params.get('end') : '');
+      window.location = deepLink;
+      setTimeout(function() {
+        window.location = 'https://youtu.be/' + v + (start ? '?t=' + Math.floor(start) : '');
+      }, 1500);
+    }
+  </script>
+</head>
+<body>
+  <p>LoopTube 앱이 설치되어 있으면 자동으로 열립니다…</p>
+</body>
+</html>

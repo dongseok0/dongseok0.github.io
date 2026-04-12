@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["3Q588G9974.com.perkmine.LoopTube"],
+        "components": [
+          { "/": "/loop*" }
+        ]
+      }
+    ]
+  }
+}
