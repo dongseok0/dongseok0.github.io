@@ -43,8 +43,14 @@
     window.addEventListener('DOMContentLoaded', function() {
       var link = buildDeepLink();
       var btn  = document.getElementById('open-btn');
-      if (link) { btn.href = link; }
-      else      { btn.textContent = '잘못된 링크입니다'; btn.style.background = '#636366'; }
+      if (!link) {
+        btn.textContent = '잘못된 링크입니다';
+        btn.style.background = '#636366';
+        return;
+      }
+      btn.href = link;
+      // 페이지 로드 즉시 앱 열기 시도 (plist에 looptube:// 등록된 경우 작동)
+      window.location = link;
     });
   </script>
 </head>
