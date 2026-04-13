@@ -6,21 +6,51 @@
   <meta charset="utf-8">
   <title>LoopTube</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f2f2f7;
+      color: #1c1c1e;
+    }
+    h1 { font-size: 1.4rem; margin-bottom: 8px; }
+    p  { font-size: 0.95rem; color: #636366; margin-bottom: 32px; }
+    a.btn {
+      display: inline-block;
+      background: #ff3b30;
+      color: #fff;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+  </style>
   <script>
-    var params = new URLSearchParams(window.location.search);
-    var v = params.get('v');
-    var start = params.get('start');
-    var end = params.get('end');
-
-    if (v) {
-      var deepLink = 'looptube://load?v=' + v
+    function buildDeepLink() {
+      var p = new URLSearchParams(window.location.search);
+      var v = p.get('v'), start = p.get('start'), end = p.get('end');
+      if (!v) return null;
+      return 'looptube://load?v=' + v
         + (start ? '&start=' + start : '')
         + (end   ? '&end='   + end   : '');
-      window.location = deepLink;
     }
+    window.addEventListener('DOMContentLoaded', function() {
+      var link = buildDeepLink();
+      var btn  = document.getElementById('open-btn');
+      if (link) { btn.href = link; }
+      else      { btn.textContent = '잘못된 링크입니다'; btn.style.background = '#636366'; }
+    });
   </script>
 </head>
 <body>
-  <p>LoopTube 앱이 설치되어 있으면 자동으로 열립니다…</p>
+  <h1>LoopTube</h1>
+  <p>아래 버튼을 탭해서 앱을 여세요</p>
+  <a id="open-btn" class="btn" href="#">앱에서 열기</a>
 </body>
 </html>
