@@ -16,17 +16,6 @@
       var deepLink = 'looptube://load?v=' + v
         + (start ? '&start=' + start : '')
         + (end   ? '&end='   + end   : '');
-      var youtubeURL = 'https://youtu.be/' + v + (start ? '?t=' + Math.floor(parseFloat(start)) : '');
-
-      // 앱이 열리면 페이지가 hidden 상태가 됨 → 그 시점에 타이머 취소
-      var fallbackTimer = setTimeout(function() {
-        window.location = youtubeURL;
-      }, 2000);
-
-      document.addEventListener('visibilitychange', function() {
-        if (document.hidden) clearTimeout(fallbackTimer);
-      });
-
       window.location = deepLink;
     }
   </script>
