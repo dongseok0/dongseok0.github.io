@@ -1,0 +1,49 @@
+---
+import Layout from "../../components/Layout.astro";
+
+type MarkdownPost = {
+  frontmatter: {
+    title: string;
+    description: string;
+    date: string;
+    slug: string;
+    category: string;
+  };
+  render: () => Promise<{ Content: any }>;
+};
+
+export async function getStaticPaths() {
+  const postModules = import.meta.glob<MarkdownPost>("../../content/posts/*.md", {
+    eager: true,
+  });
+
+  return Object.values(postModules).map((post) => ({
+    params: { slug: post.frontmatter.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={post.frontmatter.title} description={post.frontmatter.description}>
+  <article class="article">
+    <header class="article-header">
+      <a class="back-link" href="/">Writing</a>
+      <p class="eyebrow">{post.frontmatter.category}</p>
+      <h1>{post.frontmatter.title}</h1>
+      <p>{post.frontmatter.description}</p>
+      <time datetime={post.frontmatter.date}>
+        {new Date(post.frontmatter.date).toLocaleDateString("en", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+      </time>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Layout>

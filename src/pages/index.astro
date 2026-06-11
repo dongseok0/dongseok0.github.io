@@ -1,0 +1,55 @@
+---
+import Layout from "../components/Layout.astro";
+
+type MarkdownPost = {
+  frontmatter: {
+    title: string;
+    description: string;
+    date: string;
+    slug: string;
+  };
+};
+
+const posts = Object.values(
+  import.meta.glob<MarkdownPost>("../content/posts/*.md", { eager: true }),
+).sort(
+  (a, b) => new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf(),
+);
+---
+
+<Layout>
+  <section class="intro" aria-labelledby="intro-title">
+    <p class="eyebrow">Engineering notes</p>
+    <h1 id="intro-title">Debugging stories from real software systems.</h1>
+    <p>
+      Short writeups on mobile performance, production behavior, and the small implementation details that matter.
+    </p>
+  </section>
+
+  <section class="post-list" aria-labelledby="writing-title">
+    <h2 id="writing-title">Writing</h2>
+    {
+      posts.length > 0 ? (
+        posts.map((post) => (
+          <article class="post-row">
+            <time datetime={post.frontmatter.date}>
+              {new Date(post.frontmatter.date).toLocaleDateString("en", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+            </time>
+            <div>
+              <h3>
+                <a href={`/blog/${post.frontmatter.slug}/`}>{post.frontmatter.title}</a>
+              </h3>
+              <p>{post.frontmatter.description}</p>
+            </div>
+          </article>
+        ))
+      ) : (
+        <p class="empty-state">Posts are coming soon.</p>
+      )
+    }
+  </section>
+</Layout>

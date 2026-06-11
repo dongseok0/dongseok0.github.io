@@ -1,0 +1,41 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const siteName = "Dongseok Paeng";
+const {
+  title = siteName,
+  description = "Engineering notes on mobile, product systems, and debugging.",
+} = Astro.props;
+const pageTitle = title === siteName ? siteName : `${title} | ${siteName}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/">Dongseok Paeng</a>
+      <nav aria-label="Primary">
+        <a href="/">Writing</a>
+        <a href="https://github.com/dongseok0">GitHub</a>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <span>Notes from production debugging and software work.</span>
+    </footer>
+  </body>
+</html>
