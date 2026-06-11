@@ -2,6 +2,7 @@
 import Layout from "../../components/Layout.astro";
 
 type MarkdownPost = {
+  default: any;
   frontmatter: {
     title: string;
     description: string;
@@ -9,7 +10,6 @@ type MarkdownPost = {
     slug: string;
     category: string;
   };
-  render: () => Promise<{ Content: any }>;
 };
 
 export async function getStaticPaths() {
@@ -24,7 +24,7 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const Content = post.default;
 ---
 
 <Layout title={post.frontmatter.title} description={post.frontmatter.description}>
