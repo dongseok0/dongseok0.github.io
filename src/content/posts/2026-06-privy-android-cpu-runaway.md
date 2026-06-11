@@ -19,13 +19,13 @@ The measurements eventually made the priority clear: the continuous UI rendering
 
 ## Measurement Summary
 
-| State | Main screen UI rendering | App CPU | Thermal | Temperature | Interpretation |
-| --- | ---: | ---: | --- | --- | --- |
-| Baseline build, after ~5 min on the main screen | 5s `618 frames` | `282-325%` | status `1` | AP `48.3C`, PA `49.0C`, skin `39.9C`, BAT `39.7C` | Re-measured baseline still showed both problems: continuous main screen rendering plus hot `DefaultDispatcher` workers from Privy initialization. Thermal status was only `1`, but the device was already warm by AP/PA/skin/BAT readings. |
-| Experiment A: shimmer limited to loading only, after ~5 min on the main screen | 5s `618 frames` | `253-293%` | status `3` | AP `49.6C`, PA `50.3C`, skin `42.0C`, BAT `43.3C` | Limiting shimmer alone did not materially reduce the heat source; continuous rendering and Privy `DefaultDispatcher` workers remained. |
-| Experiment B: shimmer limited + marquee removed, after ~10 min on the main screen | 5s `0 frames` | `200-242%` | status `2` | AP `44.5C`, PA `45.0C`, skin `39.1C`, BAT `39.5C` | The main screen UI rendering loop stayed gone, but CPU remained high in Privy `DefaultDispatcher` workers. Temperature improved from Experiment A, but the app was still not idle. |
-| Experiment C: auth gate only, after ~5 min on the main screen | 5s `610 frames` | `73-92%` | status `0` | AP `38.5C`, PA `39.2C`, skin `35.0C`, BAT `35.3C` | Privy runaway disappeared. Experiment B was not included in this build, so main screen UI rendering still remained. |
-| Experiment B + C combined | 5s `0 frames` | `0.0%` in repeated `top` samples | status `0` | AP `33.4C`, PA `33.8C`, skin `32.5C`, BAT `33.2C` | Both loops were gone: no main screen continuous rendering and no Privy `DefaultDispatcher` runaway. |
+| State | Main screen UI rendering | App CPU | Thermal | Temperature |
+| --- | ---: | ---: | --- | --- |
+| Baseline build, after ~5 min on the main screen | 5s `618 frames` | `282-325%` | status `1` | AP `48.3C`, PA `49.0C`, skin `39.9C`, BAT `39.7C` |
+| Experiment A: shimmer limited to loading only, after ~5 min on the main screen | 5s `618 frames` | `253-293%` | status `3` | AP `49.6C`, PA `50.3C`, skin `42.0C`, BAT `43.3C` |
+| Experiment B: shimmer limited + marquee removed, after ~10 min on the main screen | 5s `0 frames` | `200-242%` | status `2` | AP `44.5C`, PA `45.0C`, skin `39.1C`, BAT `39.5C` |
+| Experiment C: auth gate only, after ~5 min on the main screen | 5s `610 frames` | `73-92%` | status `0` | AP `38.5C`, PA `39.2C`, skin `35.0C`, BAT `35.3C` |
+| Experiment B + C combined | 5s `0 frames` | `0.0%` in repeated `top` samples | status `0` | AP `33.4C`, PA `33.8C`, skin `32.5C`, BAT `33.2C` |
 
 ## First Cause: Always-On Main Screen UI Animation
 
