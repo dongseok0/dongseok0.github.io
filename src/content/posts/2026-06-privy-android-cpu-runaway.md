@@ -6,6 +6,26 @@ slug: "privy-android-cpu-runaway"
 category: "Android Performance"
 ---
 
+## Update: It Happened Again Through Session Refresh
+
+A teammate later reproduced the same class of issue while implementing Android session refresh. This time, the app did not briefly compose the sign-in screen. The trigger was simpler: the network/auth graph constructed `SessionRefresher`, `SessionRefresher` directly injected `Privy`, and that was enough to initialize the Privy Android SDK during normal authenticated app usage.
+
+The fix was to make the Privy dependency lazy:
+
+```kotlin
+class SessionRefresher @Inject constructor(
+    private val sessionManager: SessionManager,
+    private val privy: Lazy<Privy>,
+    private val json: Json,
+)
+```
+
+Then `privy.get()` is called only inside the actual Privy-backed 401 reauth path, not when the OkHttp/auth graph is built. We also added an agent-facing Android note so future changes do not accidentally reintroduce direct `Privy` injection into long-lived network/auth singletons.
+
+If you use the Privy Android SDK, it is worth checking this explicitly: make sure normal signed-in API usage can start, build its network client, and render the authenticated home screen without initializing Privy. Treat Privy as something needed for sign-in, logout, or real reauth work, not as a dependency that every authenticated request path should eagerly construct.
+
+---
+
 While investigating heat in an Android app, we found a surprising pattern: the main screen looked idle, but the device got hot quickly and `top` showed the app process using roughly 280-300% CPU.
 
 The first suspicion was network polling or repeated API retries. That turned out not to be the main issue. After `logcat -c`, a 10-second observation window showed no repeated logs from the app PID. Protected API requests appeared around tab switches or screen recreation, but they were not continuously repeating.
