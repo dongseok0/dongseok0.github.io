@@ -1,10 +1,5 @@
-_site/*
-_theme_packages/*
-
-Thumbs.db
+node_modules/
+dist/
+.astro/
 .DS_Store
-
-!.gitkeep
-
-.rbenv-version
-.rvmrc
+*.log
