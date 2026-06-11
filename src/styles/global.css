@@ -41,7 +41,6 @@ a:hover {
 }
 
 .site-header,
-.site-footer,
 main {
   width: min(920px, calc(100% - 40px));
   margin-inline: auto;
@@ -107,8 +106,7 @@ h1 {
 }
 
 .post-list {
-  border-top: 1px solid var(--line);
-  padding: 32px 0 96px;
+  padding: 54px 0 96px;
 }
 
 .post-list h2 {
@@ -261,13 +259,6 @@ h1 {
 .prose th {
   color: var(--accent-strong);
   font-weight: 700;
-}
-
-.site-footer {
-  padding: 42px 0;
-  border-top: 1px solid var(--line);
-  color: var(--muted);
-  font-size: 0.92rem;
 }
 
 @media (max-width: 640px) {

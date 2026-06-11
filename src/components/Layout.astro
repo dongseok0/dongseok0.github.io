@@ -9,7 +9,7 @@ interface Props {
 const siteName = "Dongseok Paeng";
 const {
   title = siteName,
-  description = "Engineering notes on mobile, product systems, and debugging.",
+  description = "Personal writing by Dongseok Paeng.",
 } = Astro.props;
 const pageTitle = title === siteName ? siteName : `${title} | ${siteName}`;
 ---
@@ -34,8 +34,5 @@ const pageTitle = title === siteName ? siteName : `${title} | ${siteName}`;
     <main>
       <slot />
     </main>
-    <footer class="site-footer">
-      <span>Notes from production debugging and software work.</span>
-    </footer>
   </body>
 </html>
