@@ -1,5 +1,5 @@
 ---
-title: "Fix the Client, Not the API Contract"
+title: "Why OpenAPI date-time Failed Only on iOS"
 description: "A short note on an OpenAPI date-time decoding bug, a wrong agent suggestion, and why engineering judgment still matters."
 date: "2026-06-29"
 slug: "openapi-date-transcoder"
